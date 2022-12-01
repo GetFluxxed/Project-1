@@ -46,7 +46,7 @@ const boss = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
-const wallStart = new Environment(200, 300, 35, -300, 'black')
+const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
 const wallSide = new Environment(0, 0, 35, 500, 'black')
 const wallConnector = new Environment(200, 600, 35, -200, 'black')
@@ -57,21 +57,22 @@ const wallEnd = new Environment(0, 430, 235, 35, 'black')
 // == ! Movement Function ! == \\
 const pressedKeys = {}
 function characterMovement(speed) {
+    if (pressedKeys.w && pressedKeys.c) {
+        player.y -= speed + 50
+    }
     if (pressedKeys.w) {
         player.y -= speed
     }
-    if (pressedKeys.s) {
-        player.y += speed
-    }
+    if (pressedKeys.s)
+
+        if (pressedKeys.s) {
+            player.y += speed
+        }
     if (pressedKeys.a) {
         player.x -= speed
     }
     if (pressedKeys.d) {
         player.x += speed
-    }
-    if (pressedKeys.c) {
-        player.x += speed + 50
-        player.y -= speed + 50
     }
 }
 
@@ -98,10 +99,11 @@ function gameRuntime() {
     // == ! Game Logic for Interacting with Environments ! == \\
 
     if (detectHit(player, wallStart)) {
-        characterMovement(-5)
+        characterMovement(-10)
     } else {
-        characterMovement(5)
+        characterMovement(10)
     }
+
     // == ! Defining Game Logic for Winning/Losing ! == \\
     if (detectHit(player, boss)) {
         boss.alive = false
@@ -110,14 +112,14 @@ function gameRuntime() {
 
     // == ! Rendering of Objects ! == \\
     floorMain.render()
-    if (player.alive) {
-        player.render()
-    }
     wallStart.render()
     wallBack.render()
     wallSide.render()
     wallConnector.render()
     wallEnd.render()
+    if (player.alive) {
+        player.render()
+    }
     if (boss.alive) {
         boss.render()
     }
