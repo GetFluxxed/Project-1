@@ -38,19 +38,20 @@ class Environment {
 }
 
 // == ! Starting the Game ! == \\
-const gameRuntimeInterval = setInterval(gameRuntime, 60)
+const gameRuntimeInterval = setInterval(gameRuntime, 50)
 
 // == ! Creation of Player and Mobs ! == \\
 const player = new Character(90, 55, 25, 25, 'lightgrey')
 const boss = new Character(1000, 200, 50, 76, 'white')
 
-// == ! Creation of Walls ! == \\
-const floorMain = new Environment(0, 0, 395, 500, 'gray')
+// == ! Creation of Walls/Environment Pieces ! == \\
+// const floorMain = new Environment(0, 0, 395, 500, 'gray')
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
-const wallSide = new Environment(0, 0, 35, 500, 'black')
-const wallConnector = new Environment(200, 600, 35, -200, 'black')
+const wallSide = new Environment(0, 0, 35, 1000, 'black')
+const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
+const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
@@ -63,13 +64,19 @@ function characterMovement(speed) {
     if (pressedKeys.w) {
         player.y -= speed
     }
-    if (pressedKeys.s)
-
-        if (pressedKeys.s) {
-            player.y += speed
-        }
+    if (pressedKeys.s && pressedKeys.c)
+        player.y += speed + 50
+    if (pressedKeys.s) {
+        player.y += speed
+    }
+    if (pressedKeys.a && pressedKeys.c) {
+        player.x -= speed + 50
+    }
     if (pressedKeys.a) {
         player.x -= speed
+    }
+    if (pressedKeys.d && pressedKeys.c) {
+        player.x += speed + 50
     }
     if (pressedKeys.d) {
         player.x += speed
@@ -99,9 +106,24 @@ function gameRuntime() {
     // == ! Game Logic for Interacting with Environments ! == \\
 
     if (detectHit(player, wallStart)) {
-        characterMovement(-10)
+        characterMovement(-20)
     } else {
         characterMovement(10)
+    }
+    if (detectHit(player, wallEnd)) {
+        characterMovement(-20)
+    }
+    if (detectHit(player, wallConnector)) {
+        characterMovement(-20)
+    }
+    if (detectHit(player, wallBack)) {
+        characterMovement(-20)
+    }
+    if (detectHit(player, wallSide)) {
+        characterMovement(-20)
+    }
+    if (detectHit(player, wallEnd2)) {
+        characterMovement(-20)
     }
 
     // == ! Defining Game Logic for Winning/Losing ! == \\
@@ -117,6 +139,7 @@ function gameRuntime() {
     wallSide.render()
     wallConnector.render()
     wallEnd.render()
+    wallEnd2.render()
     if (player.alive) {
         player.render()
     }
