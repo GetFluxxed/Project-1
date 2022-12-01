@@ -5,6 +5,7 @@ So you found yourself trapped in a dungeon, how fitting. Well, to get out of thi
 Utilizing JavaScript with Canvas Elements
 
 # Wireframe
+![wireframe](./Project%201.png)
 
 # MVP
 The MVP for the dungeon, is going to be a single level, with an enemy and a few obstacles in the way. The enemy is going to fight back. If you get hit by the enemy, you will lose!!! 
