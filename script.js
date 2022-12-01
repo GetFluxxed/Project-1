@@ -36,46 +36,50 @@ const wallSide = new Object(0, 0, 35, 500)
 console.log(player, boss, wallStart)
 // == ! SETTING UP OF FUNCTIONS ! == \\
 // == ! Movement Function ! == \\
+const pressedKeys = {}
+function objectMovement(speed) {
+    if (pressedKeys.w) {
+        hero.y -= speed
+    }
+    if (pressedKeys.s) {
+        hero.y += speed
+    }
+    if (pressedKeys.a) {
+        hero.x -= speed
+    }
+    if (pressedKeys.d) {
+        hero.x += speed
+    }
+}
 
-// function objectMovement(speed) {
-//     if (pressedKeys.w) {
-//         hero.y -= speed
-//     }
-//     if (pressedKeys.s) {
-//         hero.y += speed
-//     }
-//     if (pressedKeys.a) {
-//         hero.x -= speed
-//     }
-//     if (pressedKeys.d) {
-//         hero.x += speed
-//     }
-// }
-
-// document.addEventListener('keydown', e => pressedKeys[e.key] = true)
-// document.addEventListener('keyup', e => pressedKeys[e.key] = false)
+document.addEventListener('keydown', e => pressedKeys[e.key] = true)
+document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 
 // == ! Hit Detection Registration ! == \\
-// function detectHit(objectOne, objectTwo) {
-//     // == ! AXIS ALIGNED BOUNDING BOX COLLISION SYSTEM HIT DETECTION ! == \\
-//     // == ! MAINLY CHECKING FOR OVERLAPS ! == \\
-//     const left = objectOne.x + objectOne.width >= objectTwo.x
-//     const right = objectOne.x <= objectTwo.x + objectTwo.width
-//     const top = objectOne.y + objectOne.height >= objectTwo.y
-//     const bottom = objectOne.y <= objectTwo.y + objectTwo.height
-//     // console.log(left, right, top, bottom)
-//     return left && right && top && bottom
-// }
+function detectHit(objectOne, objectTwo) {
+    // == ! AXIS ALIGNED BOUNDING BOX COLLISION SYSTEM HIT DETECTION ! == \\
+    // == ! MAINLY CHECKING FOR OVERLAPS ! == \\
+    const left = objectOne.x + objectOne.width >= objectTwo.x
+    const right = objectOne.x <= objectTwo.x + objectTwo.width
+    const top = objectOne.y + objectOne.height >= objectTwo.y
+    const bottom = objectOne.y <= objectTwo.y + objectTwo.height
+    // console.log(left, right, top, bottom)
+    return left && right && top && bottom
+}
 
 // == ! GAMELOOP LOGIC ! == \\
 function gameRuntime() {
+    // == ! clearing canvas ! == \\
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    // == ! Defining Game Logic for Winning/Losing ! == \\
+
     // == ! Rendering of Objects ! == \\
     wallStart.render()
-    player.render()
-    boss.render()
     wallBack.render()
     wallSide.render()
+    boss.render()
+    player.render()
 
 }
 
