@@ -20,3 +20,4 @@ class Object {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
+
