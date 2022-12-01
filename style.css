@@ -1,5 +1,11 @@
 body {
-    background-color: darkslategrey;
+    /* background-colorgb(93, 255, 255)rey; */
     height: 100vh;
     width: 100vw;
+}
+
+#canvas {
+    background-color: brown;
+    height: 100%;
+    width: 100%;
 }
