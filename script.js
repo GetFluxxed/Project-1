@@ -45,10 +45,12 @@ const player = new Character(90, 55, 25, 25, 'lightgrey')
 const boss = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls ! == \\
-const floorMain = new Environment(0, 0, 350, 500, 'gray')
+const floorMain = new Environment(0, 0, 395, 500, 'gray')
 const wallStart = new Environment(200, 300, 35, -300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
 const wallSide = new Environment(0, 0, 35, 500, 'black')
+const wallConnector = new Environment(200, 600, 35, -200, 'black')
+const wallEnd = new Environment(0, 430, 235, 35, 'black')
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
@@ -108,14 +110,16 @@ function gameRuntime() {
 
     // == ! Rendering of Objects ! == \\
     floorMain.render()
+    if (player.alive) {
+        player.render()
+    }
     wallStart.render()
     wallBack.render()
     wallSide.render()
+    wallConnector.render()
+    wallEnd.render()
     if (boss.alive) {
         boss.render()
-    }
-    if (player.alive) {
-        player.render()
     }
 
 }
