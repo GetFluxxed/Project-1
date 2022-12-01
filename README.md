@@ -6,7 +6,6 @@ Utilizing JavaScript with Canvas Elements
 
 # Wireframe
 
-
 # MVP
 The MVP for the dungeon, is going to be a single level, with an enemy and a few obstacles in the way. The enemy is going to fight back. If you get hit by the enemy, you will lose!!! 
 
