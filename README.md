@@ -1,5 +1,5 @@
 # Pitch
-So you found yourself trapped in a dungeon, how fitting. Well, to get out of this, you're gonna have to kill some things and chew some bubblegum. In this top-down side scroller, escape the dungeon while facing obstacles, enemy mobs, and -- defeat the one who probably put you there in the first place.
+So you found yourself trapped in a dungeon, how fitting. Well, to get out of this, you're gonna have to kill some things and chew some bubblegum. In this top-down side scroller, escape the dungeon while facing obstacles, enemy mobs, and -- defeat the one who probably put you there in the first place, known as ME (yes I am the end game boss, I put you there).
 
 # TechStack 
 Utilizing JavaScript with Canvas Elements
