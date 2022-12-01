@@ -3,6 +3,7 @@ const canvas = document.querySelector('#canvas')
 canvas.setAttribute('height', getComputedStyle(canvas)['height'])
 canvas.setAttribute('width', getComputedStyle(canvas)['width'])
 const ctx = canvas.getContext('2d')
+let gameIsRunning = true
 
 
 // == ! CREATION OF ALL OBJECTS IN THE GAME ! == \\
@@ -44,8 +45,8 @@ const gameRuntimeInterval = setInterval(gameRuntime, 50)
 const player = new Character(90, 55, 25, 25, 'lightgrey')
 const boss = new Character(1000, 200, 50, 76, 'white')
 
-// == ! Creation of Walls/Environment Pieces ! == \\
-// const floorMain = new Environment(0, 0, 395, 500, 'gray')
+// == ! Creation of Walls/Environment ! == \\
+const floorMain = new Environment(0, 0, 395, 500, 'gray')
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
 const wallSide = new Environment(0, 0, 35, 1000, 'black')
@@ -56,30 +57,33 @@ const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
 // == ! Movement Function ! == \\
+
 const pressedKeys = {}
 function characterMovement(speed) {
-    if (pressedKeys.w && pressedKeys.c) {
-        player.y -= speed + 50
-    }
-    if (pressedKeys.w) {
-        player.y -= speed
-    }
-    if (pressedKeys.s && pressedKeys.c)
-        player.y += speed + 50
-    if (pressedKeys.s) {
-        player.y += speed
-    }
-    if (pressedKeys.a && pressedKeys.c) {
-        player.x -= speed + 50
-    }
-    if (pressedKeys.a) {
-        player.x -= speed
-    }
-    if (pressedKeys.d && pressedKeys.c) {
-        player.x += speed + 50
-    }
-    if (pressedKeys.d) {
-        player.x += speed
+    if (gameIsRunning) {
+        if (pressedKeys.w && pressedKeys.c) {
+            player.y -= speed + 50
+        }
+        if (pressedKeys.w) {
+            player.y -= speed
+        }
+        if (pressedKeys.s && pressedKeys.c)
+            player.y += speed + 50
+        if (pressedKeys.s) {
+            player.y += speed
+        }
+        if (pressedKeys.a && pressedKeys.c) {
+            player.x -= speed + 50
+        }
+        if (pressedKeys.a) {
+            player.x -= speed
+        }
+        if (pressedKeys.d && pressedKeys.c) {
+            player.x += speed + 50
+        }
+        if (pressedKeys.d) {
+            player.x += speed
+        }
     }
 }
 
@@ -103,8 +107,15 @@ function gameRuntime() {
     // == ! clearing canvas ! == \\
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    // == ! Game Logic for Interacting with Environments ! == \\
 
+    // == ! Defining Game Logic for Winning/Losing ! == \\
+    if (detectHit(player, boss)) {
+        boss.alive = false
+        gameIsRunning = false
+        console.log('You have slain ME!!! You have won the game!!!')
+
+    }
+    // == ! Game Logic for Interacting with Environments ! == \\
     if (detectHit(player, wallStart)) {
         characterMovement(-20)
     } else {
@@ -126,11 +137,6 @@ function gameRuntime() {
         characterMovement(-20)
     }
 
-    // == ! Defining Game Logic for Winning/Losing ! == \\
-    if (detectHit(player, boss)) {
-        boss.alive = false
-        console.log('You have slain ME!!! You have won the game!!!')
-    }
 
     // == ! Rendering of Objects ! == \\
     floorMain.render()
