@@ -6,13 +6,29 @@ const ctx = canvas.getContext('2d')
 
 
 // == ! CREATION OF ALL OBJECTS IN THE GAME ! == \\
-class Object {
+class Character {
     constructor(x, y, width, height, color) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
         this.color = color
+        this.alive = true
+    }
+    // == ! RENDERING OF OBJECTS METHOD ! == \\
+    render() {
+        ctx.fillStyle = this.color
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+    }
+}
+class Environment {
+    constructor(x, y, width, height, color) {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+        this.color = color
+        this.alive = true
     }
     // == ! RENDERING OF OBJECTS METHOD ! == \\
     render() {
@@ -25,30 +41,35 @@ class Object {
 const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
-const player = new Object(90, 55, 25, 25, 'lightgrey')
-const boss = new Object(1000, 200, 50, 76, 'white')
+const player = new Character(90, 55, 25, 25, 'lightgrey')
+const boss = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls ! == \\
-const wallStart = new Object(200, 300, 35, -300, 'black')
-const wallBack = new Object(0, 0, 200, 35, 'black')
-const wallSide = new Object(0, 0, 35, 500)
+const floorMain = new Environment(0, 0, 350, 500, 'gray')
+const wallStart = new Environment(200, 300, 35, -300, 'black')
+const wallBack = new Environment(0, 0, 200, 35, 'black')
+const wallSide = new Environment(0, 0, 35, 500, 'black')
 
-console.log(player, boss, wallStart)
+
 // == ! SETTING UP OF FUNCTIONS ! == \\
 // == ! Movement Function ! == \\
 const pressedKeys = {}
-function objectMovement(speed) {
+function characterMovement(speed) {
     if (pressedKeys.w) {
-        hero.y -= speed
+        player.y -= speed
     }
     if (pressedKeys.s) {
-        hero.y += speed
+        player.y += speed
     }
     if (pressedKeys.a) {
-        hero.x -= speed
+        player.x -= speed
     }
     if (pressedKeys.d) {
-        hero.x += speed
+        player.x += speed
+    }
+    if (pressedKeys.c) {
+        player.x += speed + 50
+        player.y -= speed + 50
     }
 }
 
@@ -72,14 +93,30 @@ function gameRuntime() {
     // == ! clearing canvas ! == \\
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+    // == ! Game Logic for Interacting with Environments ! == \\
+
+    if (detectHit(player, wallStart)) {
+        characterMovement(-5)
+    } else {
+        characterMovement(5)
+    }
     // == ! Defining Game Logic for Winning/Losing ! == \\
+    if (detectHit(player, boss)) {
+        boss.alive = false
+        console.log('You have slain ME!!! You have won the game!!!')
+    }
 
     // == ! Rendering of Objects ! == \\
+    floorMain.render()
     wallStart.render()
     wallBack.render()
     wallSide.render()
-    boss.render()
-    player.render()
+    if (boss.alive) {
+        boss.render()
+    }
+    if (player.alive) {
+        player.render()
+    }
 
 }
 
