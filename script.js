@@ -55,6 +55,20 @@ class Text {
     }
 }
 
+class SmallText {
+    constructor(x, y, text) {
+        this.x = x
+        this.y = y
+        this.text = text
+        this.display = false
+    }
+    render() {
+        ctx.font = '25px Cinzel'
+        ctx.fillStyle = this.color
+        ctx.fillText(this.text, this.x, this.y)
+    }
+}
+
 
 
 
@@ -85,12 +99,25 @@ const doorChest = new Environment(200, 465, 35, 135, 'brown')
 const objective = new Text(450, 50, 'You gotta get out')
 const hint = new Text(350, 100, 'You need a weapon you fool')
 const deathTxt = new Text(515, 50, 'Get Smacked')
+const lavaTxt = new Text(515, 50, 'Mmm Cwispy')
 const wonTxt = new Text(515, 50, 'Hey you won')
+const swordTxt = new SmallText(450, 200, 'You have a Sword')
+const keyTxt = new SmallText(450, 250, 'You have a Key')
 // const deathText = new Text()
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
 // == ! Movement Function ! == \\
+
+function openLog() {
+    if (player.hasKey) {
+        keyTxt.display = true
+    }
+    if (player.weapon) {
+        swordTxt.display = true
+    }
+}
+
 
 const pressedKeys = {}
 function characterMovement(speed) {
@@ -117,6 +144,9 @@ function characterMovement(speed) {
         }
         if (pressedKeys.d) {
             player.x += speed
+        }
+        if (pressedKeys.i) {
+            openLog()
         }
     }
 }
@@ -195,13 +225,13 @@ function gameRuntime() {
     if (detectHit(player, lavaTop)) {
         player.alive = false
         objective.display = false
-        deathTxt.display = true
+        lavaTxt.display = true
         gameIsRunning = false
     }
     if (detectHit(player, lavaBot)) {
         player.alive = false
         objective.display = false
-        deathTxt.display = true
+        lavaTxt.display = true
         gameIsRunning = false
     }
     if (detectHit(player, keyChest)) {
@@ -254,5 +284,15 @@ function gameRuntime() {
     if (wonTxt.display) {
         wonTxt.render()
     }
+    if (swordTxt.display) {
+        swordTxt.render()
+    }
+    if (keyTxt.display) {
+        keyTxt.render()
+    }
+    if (lavaTxt.display) {
+        lavaTxt.render()
+    }
 }
+
 
