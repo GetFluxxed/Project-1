@@ -58,8 +58,10 @@ const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
 const walkway = new Environment(400, 400, 500, 55, 'brown')
-const treasureChest = new Environment(90, 755, 50, 35, 'orange')
-const doorStart = new Environment(200, 300, 35, 130, 'lightbrown')
+const treasureChest = new Environment(90, 755, 50, 35, 'gold')
+const keyChest = new Environment(35, 395, 50, 35, 'gold')
+const doorStart = new Environment(200, 300, 35, 130, 'brown')
+const doorChest = new Environment(200, 465, 35, 135, 'brown')
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
@@ -154,6 +156,11 @@ function gameRuntime() {
             characterMovement(-20)
         }
     }
+    if (detectHit(player, doorChest)) {
+        if (!player.hasKey) {
+            characterMovement(-20)
+        }
+    }
 
     if (detectHit(player, lavaTop)) {
         player.alive = false
@@ -162,6 +169,11 @@ function gameRuntime() {
     if (detectHit(player, lavaBot)) {
         player.alive = false
         gameIsRunning = false
+    }
+    if (detectHit(player, keyChest)) {
+        player.hasKey = true
+        keyChest.alive = false
+        console.log(player.hasKey)
     }
     if (detectHit(player, treasureChest)) {
         player.weapon = true
@@ -181,6 +193,11 @@ function gameRuntime() {
     lavaBot.render()
     walkway.render()
     doorStart.render()
+    doorChest.render()
+
+    if (keyChest.alive) {
+        keyChest.render()
+    }
     if (treasureChest.alive) {
         treasureChest.render()
     }
