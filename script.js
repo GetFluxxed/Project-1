@@ -101,8 +101,8 @@ const hint = new Text(350, 100, 'You need a weapon you fool')
 const deathTxt = new Text(515, 50, 'Get Smacked')
 const lavaTxt = new Text(515, 50, 'Mmm Cwispy')
 const wonTxt = new Text(515, 50, 'Hey you won')
-const swordTxt = new SmallText(450, 200, 'You have a Sword')
-const keyTxt = new SmallText(450, 250, 'You have a Key')
+const swordTxt = new SmallText(1050, 825, 'You have a Sword')
+const keyTxt = new SmallText(1050, 875, 'You have a Key')
 // const deathText = new Text()
 
 
@@ -110,12 +110,17 @@ const keyTxt = new SmallText(450, 250, 'You have a Key')
 // == ! Movement Function ! == \\
 
 function openLog() {
-    if (player.hasKey) {
-        keyTxt.display = true
-    }
     if (player.weapon) {
         swordTxt.display = true
     }
+
+    if (player.hasKey) {
+        keyTxt.display = true
+    }
+}
+function closeLog() {
+    keyTxt.display = false
+    swordTxt.display = false
 }
 
 
@@ -147,6 +152,9 @@ function characterMovement(speed) {
         }
         if (pressedKeys.i) {
             openLog()
+        }
+        if (!pressedKeys.i) {
+            closeLog()
         }
     }
 }
