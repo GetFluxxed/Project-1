@@ -40,8 +40,26 @@ class Environment {
     }
 }
 
+// == ! Creating Winning and Losing Text ! == \\
+class Text {
+    constructor(x, y, text) {
+        this.x = x
+        this.y = y
+        this.text = text
+        this.display = false
+    }
+    render() {
+        ctx.font = '40px Cinzel'
+        ctx.fillStyle = this.color
+        ctx.fillText(this.text, this.x, this.y)
+    }
+}
+
+
+
+
 // == ! Starting the Game ! == \\
-const gameRuntimeInterval = setInterval(gameRuntime, 50)
+const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
 const player = new Character(90, 55, 25, 25, 'lightgrey')
@@ -58,10 +76,17 @@ const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
 const walkway = new Environment(400, 400, 500, 55, 'brown')
-const treasureChest = new Environment(90, 755, 50, 35, 'gold')
+const treasureChest = new Environment(90, 855, 50, 35, 'gold')
 const keyChest = new Environment(35, 395, 50, 35, 'gold')
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
 const doorChest = new Environment(200, 465, 35, 135, 'brown')
+
+// == ! Creation of Text Elements ! == \\
+const objective = new Text(450, 50, 'You gotta get out')
+const hint = new Text(350, 100, 'You need a weapon you fool')
+const deathTxt = new Text(515, 50, 'Get Smacked')
+const wonTxt = new Text(515, 50, 'Hey you won')
+// const deathText = new Text()
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
@@ -110,7 +135,7 @@ function detectHit(objectOne, objectTwo) {
     // console.log(left, right, top, bottom)
     return left && right && top && bottom
 }
-
+objective.display = true
 // == ! GAMELOOP LOGIC ! == \\
 function gameRuntime() {
     // == ! clearing canvas ! == \\
@@ -121,12 +146,17 @@ function gameRuntime() {
     if (detectHit(player, boss)) {
         if (player.weapon) {
             boss.alive = false
+            objective.display = false
+            wonTxt.display = true
             gameIsRunning = false
-            console.log('You have slain ME!!! You have won the game!!!')
         } else {
             player.alive = false
             gameIsRunning = false
-            console.log('You Have Been Slain')
+            if (!player.alive) {
+                objective.display = false
+                hint.display = true
+                deathTxt.display = true
+            }
         }
 
     }
@@ -164,10 +194,14 @@ function gameRuntime() {
 
     if (detectHit(player, lavaTop)) {
         player.alive = false
+        objective.display = false
+        deathTxt.display = true
         gameIsRunning = false
     }
     if (detectHit(player, lavaBot)) {
         player.alive = false
+        objective.display = false
+        deathTxt.display = true
         gameIsRunning = false
     }
     if (detectHit(player, keyChest)) {
@@ -194,7 +228,6 @@ function gameRuntime() {
     walkway.render()
     doorStart.render()
     doorChest.render()
-
     if (keyChest.alive) {
         keyChest.render()
     }
@@ -208,5 +241,18 @@ function gameRuntime() {
         boss.render()
     }
 
+    // == ! Rendering Text Elements ! == \\
+    if (objective.display) {
+        objective.render()
+    }
+    if (hint.display) {
+        hint.render()
+    }
+    if (deathTxt.display) {
+        deathTxt.render()
+    }
+    if (wonTxt.display) {
+        wonTxt.render()
+    }
 }
 
