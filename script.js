@@ -16,6 +16,7 @@ class Character {
         this.color = color
         this.alive = true
         this.weapon = false
+        this.hasKey = false
     }
     // == ! RENDERING OF OBJECTS METHOD ! == \\
     render() {
@@ -57,7 +58,8 @@ const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
 const walkway = new Environment(400, 400, 500, 55, 'brown')
-const treasureChest = new Environment(90, 755, 35, 35, 'orange')
+const treasureChest = new Environment(90, 755, 50, 35, 'orange')
+const doorStart = new Environment(200, 300, 35, 130, 'lightbrown')
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
@@ -115,9 +117,15 @@ function gameRuntime() {
 
     // == ! Defining Game Logic for Winning/Losing ! == \\
     if (detectHit(player, boss)) {
-        boss.alive = false
-        gameIsRunning = false
-        console.log('You have slain ME!!! You have won the game!!!')
+        if (player.weapon) {
+            boss.alive = false
+            gameIsRunning = false
+            console.log('You have slain ME!!! You have won the game!!!')
+        } else {
+            player.alive = false
+            gameIsRunning = false
+            console.log('You Have Been Slain')
+        }
 
     }
     // == ! Game Logic for Interacting with Environments ! == \\
@@ -141,6 +149,12 @@ function gameRuntime() {
     if (detectHit(player, wallEnd2)) {
         characterMovement(-20)
     }
+    if (detectHit(player, doorStart)) {
+        if (!player.hasKey) {
+            characterMovement(-20)
+        }
+    }
+
     if (detectHit(player, lavaTop)) {
         player.alive = false
         gameIsRunning = false
@@ -166,6 +180,7 @@ function gameRuntime() {
     lavaTop.render()
     lavaBot.render()
     walkway.render()
+    doorStart.render()
     if (treasureChest.alive) {
         treasureChest.render()
     }
