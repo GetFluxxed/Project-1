@@ -15,6 +15,7 @@ class Character {
         this.height = height
         this.color = color
         this.alive = true
+        this.weapon = false
     }
     // == ! RENDERING OF OBJECTS METHOD ! == \\
     render() {
@@ -49,10 +50,14 @@ const boss = new Character(1000, 200, 50, 76, 'white')
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
-const wallSide = new Environment(0, 0, 35, 1000, 'black')
+const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+const lavaTop = new Environment(400, 0, 500, 399, "red")
+const lavaBot = new Environment(400, 456, 500, 550, "red")
+const walkway = new Environment(400, 400, 500, 55, 'brown')
+const treasureChest = new Environment(90, 755, 35, 35, 'orange')
 
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
@@ -136,7 +141,19 @@ function gameRuntime() {
     if (detectHit(player, wallEnd2)) {
         characterMovement(-20)
     }
-
+    if (detectHit(player, lavaTop)) {
+        player.alive = false
+        gameIsRunning = false
+    }
+    if (detectHit(player, lavaBot)) {
+        player.alive = false
+        gameIsRunning = false
+    }
+    if (detectHit(player, treasureChest)) {
+        player.weapon = true
+        treasureChest.alive = false
+        console.log(player.weapon)
+    }
 
     // == ! Rendering of Objects ! == \\
     floorMain.render()
@@ -146,6 +163,12 @@ function gameRuntime() {
     wallConnector.render()
     wallEnd.render()
     wallEnd2.render()
+    lavaTop.render()
+    lavaBot.render()
+    walkway.render()
+    if (treasureChest.alive) {
+        treasureChest.render()
+    }
     if (player.alive) {
         player.render()
     }
