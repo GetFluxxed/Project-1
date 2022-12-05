@@ -77,11 +77,10 @@ const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
 const player = new Character(90, 55, 25, 25, 'lightgrey')
-const enemyOne = new Character(1000, 200, 50, 76, 'white')
+const boss = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
-
 // = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
@@ -89,22 +88,17 @@ const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
-
-// = ! Dangerous Environments 1 = \\
+// = ! Danger ! = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
-
-// = ! Misc. Environment ! = \\
+// = ! Misc. ! = \\
 const walkway = new Environment(400, 400, 500, 55, 'brown')
-
-// = ! Interactables(In pairs/what activates what) ! = \\
-const keyChest = new Environment(35, 395, 50, 35, 'gold')
+// = ! Interactable Pairs(if applicable) ! = \\
+const treasureChest = new Environment(90, 855, 50, 35, 'gold')
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
 
-const treasureChest = new Environment(90, 855, 50, 35, 'gold')
-const doorChest = new Environment(200, 465, 35, 135, 'brown')
-
-
+const keyChest = new Environment(35, 395, 50, 35, 'gold')
+const swordChest = new Environment(200, 465, 35, 135, 'brown')
 
 // == ! Creation of Text Elements ! == \\
 const objective = new Text(450, 50, 'You gotta get out')
@@ -114,18 +108,9 @@ const lavaTxt = new Text(515, 50, 'Mmm Cwispy')
 const wonTxt = new Text(515, 50, 'Hey you won')
 const swordTxt = new SmallText(1050, 825, 'You have a Sword')
 const keyTxt = new SmallText(1050, 875, 'You have a Key')
+const directTxt = new Text(330, 100, 'WASD to move, WASD + C to dash. R to restart')
 // const deathText = new Text()
 
-function draw() {
-    const canvas = document.getElementById('canvas');
-    if (canvas.getContext) {
-        const ctx = canvas.getContext('2d');
-
-        ctx.fillRect(25, 25, 100, 100);
-        ctx.clearRect(45, 45, 60, 60);
-        ctx.strokeRect(50, 50, 50, 50);
-    }
-}
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
 // == ! Movement Function ! == \\
@@ -153,23 +138,27 @@ function characterMovement(speed) {
         }
         if (pressedKeys.w) {
             player.y -= speed
+            directTxt.display = false
         }
         if (pressedKeys.s && pressedKeys.c)
             player.y += speed + 50
         if (pressedKeys.s) {
             player.y += speed
+            directTxt.display = false
         }
         if (pressedKeys.a && pressedKeys.c) {
             player.x -= speed + 50
         }
         if (pressedKeys.a) {
             player.x -= speed
+            directTxt.display = false
         }
         if (pressedKeys.d && pressedKeys.c) {
             player.x += speed + 50
         }
         if (pressedKeys.d) {
             player.x += speed
+            directTxt.display = false
         }
         if (pressedKeys.i) {
             openLog()
@@ -186,7 +175,7 @@ function characterMovement(speed) {
             player.weapon = false
             treasureChest.alive = true
             keyChest.alive = true
-            enemyOne.alive = true
+            boss.alive = true
             hint.display = false
             objective.display = true
             deathTxt.display = false
@@ -201,6 +190,7 @@ function characterMovement(speed) {
 document.addEventListener('keydown', e => pressedKeys[e.key] = true)
 document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 
+
 // == ! Hit Detection Registration ! == \\
 function detectHit(objectOne, objectTwo) {
     // == ! AXIS ALIGNED BOUNDING BOX COLLISION SYSTEM HIT DETECTION ! == \\
@@ -213,6 +203,7 @@ function detectHit(objectOne, objectTwo) {
     return left && right && top && bottom
 }
 objective.display = true
+directTxt.display = true
 // == ! GAMELOOP LOGIC ! == \\
 function gameRuntime() {
     // == ! clearing canvas ! == \\
@@ -220,9 +211,9 @@ function gameRuntime() {
 
 
     // == ! Defining Game Logic for Winning/Losing ! == \\
-    if (detectHit(player, enemyOne)) {
+    if (detectHit(player, boss)) {
         if (player.weapon) {
-            enemyOne.alive = false
+            boss.alive = false
             objective.display = false
             wonTxt.display = true
             // gameIsRunning = false
@@ -263,7 +254,7 @@ function gameRuntime() {
             characterMovement(-20)
         }
     }
-    if (detectHit(player, doorChest)) {
+    if (detectHit(player, swordChest)) {
         if (!player.hasKey) {
             characterMovement(-20)
         }
@@ -304,7 +295,7 @@ function gameRuntime() {
     lavaBot.render()
     walkway.render()
     doorStart.render()
-    doorChest.render()
+    swordChest.render()
     if (keyChest.alive) {
         keyChest.render()
     }
@@ -314,8 +305,8 @@ function gameRuntime() {
     if (player.alive) {
         player.render()
     }
-    if (enemyOne.alive) {
-        enemyOne.render()
+    if (boss.alive) {
+        boss.render()
     }
 
     // == ! Rendering Text Elements ! == \\
@@ -340,6 +331,7 @@ function gameRuntime() {
     if (lavaTxt.display) {
         lavaTxt.render()
     }
+    if (directTxt.display) {
+        directTxt.render()
+    }
 }
-
-
