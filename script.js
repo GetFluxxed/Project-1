@@ -77,7 +77,7 @@ const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
 const player = new Character(90, 55, 25, 25, 'lightgrey')
-const boss = new Character(1000, 200, 50, 76, 'white')
+const enemyOne = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
@@ -89,9 +89,11 @@ const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+
 // = ! Dangerous Environments 1 = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
+
 // = ! Misc. Environment ! = \\
 const walkway = new Environment(400, 400, 500, 55, 'brown')
 
@@ -101,6 +103,8 @@ const doorStart = new Environment(200, 300, 35, 130, 'brown')
 
 const treasureChest = new Environment(90, 855, 50, 35, 'gold')
 const doorChest = new Environment(200, 465, 35, 135, 'brown')
+
+
 
 // == ! Creation of Text Elements ! == \\
 const objective = new Text(450, 50, 'You gotta get out')
@@ -182,7 +186,7 @@ function characterMovement(speed) {
             player.weapon = false
             treasureChest.alive = true
             keyChest.alive = true
-            boss.alive = true
+            enemyOne.alive = true
             hint.display = false
             objective.display = true
             deathTxt.display = false
@@ -216,9 +220,9 @@ function gameRuntime() {
 
 
     // == ! Defining Game Logic for Winning/Losing ! == \\
-    if (detectHit(player, boss)) {
+    if (detectHit(player, enemyOne)) {
         if (player.weapon) {
-            boss.alive = false
+            enemyOne.alive = false
             objective.display = false
             wonTxt.display = true
             // gameIsRunning = false
@@ -310,8 +314,8 @@ function gameRuntime() {
     if (player.alive) {
         player.render()
     }
-    if (boss.alive) {
-        boss.render()
+    if (enemyOne.alive) {
+        enemyOne.render()
     }
 
     // == ! Rendering Text Elements ! == \\
