@@ -42,7 +42,7 @@ class Environment {
 
 // == ! Creating Winning and Losing Text ! == \\
 class Text {
-    constructor(x, y, textr) {
+    constructor(x, y, text) {
         this.x = x
         this.y = y
         this.text = text
@@ -76,11 +76,13 @@ class SmallText {
 const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
-const player = new Character(90, 55, 25, 40, 'lightgrey')
-const skeletonOne = new Character(1500, 400, 45, 75, 'white')
+const player = new Character(90, 55, 25, 45, 'lightgrey')
+const skeletonOne = new Character(1400, 400, 35, 75, 'white')
+const zombieOne = new Character(1100, 300, 35, 50, 'green')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
+
 // = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
@@ -88,6 +90,7 @@ const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+const wallLever = new Environment(1300, 0, 35, 250, 'black')
 
 // = ! Danger ! = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
@@ -102,6 +105,9 @@ const doorStart = new Environment(200, 300, 35, 130, 'brown')
 
 const keyChest = new Environment(35, 395, 50, 35, 'gold')
 const swordChest = new Environment(200, 465, 35, 135, 'brown')
+
+const leverOne = new Environment(1290, 245, 15, 7, 'lightgrey')
+const doorEnemy = new Environment(1300, 250, 35, 130, 'brown')
 
 // == ! Creation of Text Elements ! == \\
 const objective = new Text(450, 50, 'You gotta get out')
@@ -185,7 +191,12 @@ function characterMovement(speed) {
             lavaTxt.display = false
             wonTxt.display = false
             directTxt.display = true
+            leverOne.alive = true
+            zombieOne.alive = true
             console.log('r')
+        }
+        if (detectHit(player, leverOne) && pressedKeys.f) {
+            leverOne.alive = false
         }
 
     }
@@ -232,6 +243,17 @@ function gameRuntime() {
         }
 
     }
+    if (detectHit(player, zombieOne)) {
+        if (player.weapon) {
+            zombieOne.alive = false
+        } else {
+            player.alive = false
+            objective.display = false
+            hint.display = true
+            deathTxt.display = true
+        }
+    }
+
     // == ! Game Logic for Interacting with Environments ! == \\
     if (detectHit(player, wallStart)) {
         characterMovement(-20)
@@ -268,14 +290,12 @@ function gameRuntime() {
         player.alive = false
         objective.display = false
         lavaTxt.display = true
-        wonTxt.display = false
         // gameIsRunning = false
     }
     if (detectHit(player, lavaBot)) {
         player.alive = false
         objective.display = false
         lavaTxt.display = true
-        wonTxt.display = false
         // gameIsRunning = false
     }
     if (detectHit(player, keyChest)) {
@@ -288,6 +308,11 @@ function gameRuntime() {
         treasureChest.alive = false
         console.log(player.weapon)
     }
+    if (detectHit(player, doorEnemy)) {
+        if (leverOne.alive) {
+            characterMovement(-20)
+        }
+    }
 
     // == ! Rendering of Objects ! == \\
     floorMain.render()
@@ -296,11 +321,14 @@ function gameRuntime() {
     wallSide.render()
     wallConnector.render()
     wallEnd.render()
+    wallLever.render()
     lavaTop.render()
     lavaBot.render()
     walkway.render()
     doorStart.render()
     swordChest.render()
+    leverOne.render()
+    doorEnemy.render()
     if (keyChest.alive) {
         keyChest.render()
     }
@@ -309,6 +337,9 @@ function gameRuntime() {
     }
     if (player.alive) {
         player.render()
+    }
+    if (zombieOne.alive) {
+        zombieOne.render()
     }
     if (skeletonOne.alive) {
         skeletonOne.render()
@@ -343,3 +374,4 @@ function gameRuntime() {
         directTxt.render()
     }
 }
+
