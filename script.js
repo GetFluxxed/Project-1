@@ -81,18 +81,25 @@ const boss = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
+
+// = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
 const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+// = ! Dangerous Environments 1 = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
+// = ! Misc. Environment ! = \\
 const walkway = new Environment(400, 400, 500, 55, 'brown')
-const treasureChest = new Environment(90, 855, 50, 35, 'gold')
+
+// = ! Interactables(In pairs/what activates what) ! = \\
 const keyChest = new Environment(35, 395, 50, 35, 'gold')
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
+
+const treasureChest = new Environment(90, 855, 50, 35, 'gold')
 const doorChest = new Environment(200, 465, 35, 135, 'brown')
 
 // == ! Creation of Text Elements ! == \\
@@ -105,6 +112,16 @@ const swordTxt = new SmallText(1050, 825, 'You have a Sword')
 const keyTxt = new SmallText(1050, 875, 'You have a Key')
 // const deathText = new Text()
 
+function draw() {
+    const canvas = document.getElementById('canvas');
+    if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillRect(25, 25, 100, 100);
+        ctx.clearRect(45, 45, 60, 60);
+        ctx.strokeRect(50, 50, 50, 50);
+    }
+}
 
 // == ! SETTING UP OF FUNCTIONS ! == \\
 // == ! Movement Function ! == \\
@@ -156,6 +173,24 @@ function characterMovement(speed) {
         if (!pressedKeys.i) {
             closeLog()
         }
+        if (pressedKeys.r || !gameIsRunning) {
+            gameIsRunning = true
+            player.x = 90
+            player.y = 55
+            player.alive = true
+            player.hasKey = false
+            player.weapon = false
+            treasureChest.alive = true
+            keyChest.alive = true
+            boss.alive = true
+            hint.display = false
+            objective.display = true
+            deathTxt.display = false
+            lavaTxt.display = false
+            wonTxt.display = false
+            console.log('r')
+        }
+
     }
 }
 
@@ -186,10 +221,10 @@ function gameRuntime() {
             boss.alive = false
             objective.display = false
             wonTxt.display = true
-            gameIsRunning = false
+            // gameIsRunning = false
         } else {
             player.alive = false
-            gameIsRunning = false
+            // gameIsRunning = false
             if (!player.alive) {
                 objective.display = false
                 hint.display = true
@@ -234,13 +269,13 @@ function gameRuntime() {
         player.alive = false
         objective.display = false
         lavaTxt.display = true
-        gameIsRunning = false
+        // gameIsRunning = false
     }
     if (detectHit(player, lavaBot)) {
         player.alive = false
         objective.display = false
         lavaTxt.display = true
-        gameIsRunning = false
+        // gameIsRunning = false
     }
     if (detectHit(player, keyChest)) {
         player.hasKey = true
