@@ -42,7 +42,7 @@ class Environment {
 
 // == ! Creating Winning and Losing Text ! == \\
 class Text {
-    constructor(x, y, text) {
+    constructor(x, y, textr) {
         this.x = x
         this.y = y
         this.text = text
@@ -76,8 +76,8 @@ class SmallText {
 const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
-const player = new Character(90, 55, 25, 25, 'lightgrey')
-const boss = new Character(1000, 200, 50, 76, 'white')
+const player = new Character(90, 55, 25, 40, 'lightgrey')
+const skeletonOne = new Character(1500, 400, 45, 75, 'white')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
@@ -88,11 +88,14 @@ const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+
 // = ! Danger ! = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
+
 // = ! Misc. ! = \\
 const walkway = new Environment(400, 400, 500, 55, 'brown')
+
 // = ! Interactable Pairs(if applicable) ! = \\
 const treasureChest = new Environment(90, 855, 50, 35, 'gold')
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
@@ -175,12 +178,13 @@ function characterMovement(speed) {
             player.weapon = false
             treasureChest.alive = true
             keyChest.alive = true
-            boss.alive = true
+            skeletonOne.alive = true
             hint.display = false
             objective.display = true
             deathTxt.display = false
             lavaTxt.display = false
             wonTxt.display = false
+            directTxt.display = true
             console.log('r')
         }
 
@@ -211,9 +215,9 @@ function gameRuntime() {
 
 
     // == ! Defining Game Logic for Winning/Losing ! == \\
-    if (detectHit(player, boss)) {
+    if (detectHit(player, skeletonOne)) {
         if (player.weapon) {
-            boss.alive = false
+            skeletonOne.alive = false
             objective.display = false
             wonTxt.display = true
             // gameIsRunning = false
@@ -264,12 +268,14 @@ function gameRuntime() {
         player.alive = false
         objective.display = false
         lavaTxt.display = true
+        wonTxt.display = false
         // gameIsRunning = false
     }
     if (detectHit(player, lavaBot)) {
         player.alive = false
         objective.display = false
         lavaTxt.display = true
+        wonTxt.display = false
         // gameIsRunning = false
     }
     if (detectHit(player, keyChest)) {
@@ -290,7 +296,6 @@ function gameRuntime() {
     wallSide.render()
     wallConnector.render()
     wallEnd.render()
-    wallEnd2.render()
     lavaTop.render()
     lavaBot.render()
     walkway.render()
@@ -305,8 +310,11 @@ function gameRuntime() {
     if (player.alive) {
         player.render()
     }
-    if (boss.alive) {
-        boss.render()
+    if (skeletonOne.alive) {
+        skeletonOne.render()
+    }
+    if (skeletonOne.alive) {
+        wallEnd2.render()
     }
 
     // == ! Rendering Text Elements ! == \\
