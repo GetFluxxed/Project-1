@@ -81,18 +81,23 @@ const boss = new Character(1000, 200, 50, 76, 'white')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
+// = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
 const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+// = ! Danger ! = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
 const lavaBot = new Environment(400, 456, 500, 550, "red")
+// = ! Misc. ! = \\
 const walkway = new Environment(400, 400, 500, 55, 'brown')
+// = ! Interactable Pairs(if applicable) ! = \\
 const treasureChest = new Environment(90, 855, 50, 35, 'gold')
-const keyChest = new Environment(35, 395, 50, 35, 'gold')
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
+
+const keyChest = new Environment(35, 395, 50, 35, 'gold')
 const swordChest = new Environment(200, 465, 35, 135, 'brown')
 
 // == ! Creation of Text Elements ! == \\
