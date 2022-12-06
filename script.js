@@ -48,7 +48,6 @@ class Character {
 //     }
 // }
 
-// const experiment = new Winged(102, 102, 10, 10, 'black', 115, 102, 10, 10, 110, 110, 10, 10)
 
 class Environment {
     constructor(x, y, width, height, color) {
@@ -109,6 +108,7 @@ const zombieOne = new Character(1100, 300, 35, 50, 'green')
 // const batOne = new Character(1700, 900, 15, 10, 'black')
 // const batTwo = new Character(1732, 917, 15, 10, 'black')
 // const batThree = new Character(1720, 890, 15, 10, 'black')
+// const experiment = new Winged(102, 102, 10, 10, 'black', 115, 102, 10, 10, 110, 110, 10, 10)
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
