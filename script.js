@@ -24,6 +24,32 @@ class Character {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
+
+
+
+// == !! HUGE BREAKTHROUGH WITH LEARNING EXTENSION AND DRAWING IN CANVAS !! == \\
+// class Winged extends Character {
+//     constructor(x, y, width, height, color, x2, y2, width2, height2, x3, y3, width3, height3) {
+//         super(x, y, width, height, color)
+//         this.x2 = x2
+//         this.y2 = y2
+//         this.wingLeftW = width2
+//         this.wingLeftH = height2
+//         this.x3 = x3
+//         this.y3 = y3
+//         this.wingRightW = width3
+//         this.wingRightH = height3
+//     }
+//     render() {
+//         ctx.fillStyle = this.color
+//         ctx.fillRect(this.x, this.y, this.width, this.height)
+//         ctx.fillRect(this.x2, this.y2, this.wingLeftW, this.wingLeftH)
+//         ctx.fillRect(this.x3, this.y3, this.wingRightW, this.wingRightH)
+//     }
+// }
+
+// const experiment = new Winged(102, 102, 10, 10, 'black', 115, 102, 10, 10, 110, 110, 10, 10)
+
 class Environment {
     constructor(x, y, width, height, color) {
         this.x = x
@@ -77,8 +103,12 @@ const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
 const player = new Character(90, 55, 25, 45, 'lightgrey')
-const skeletonOne = new Character(1400, 400, 35, 75, 'white')
+const skeletonOne = new Character(1900, 300, 35, 75, 'white')
 const zombieOne = new Character(1100, 300, 35, 50, 'green')
+// = ! Experimental creations ! = \\
+// const batOne = new Character(1700, 900, 15, 10, 'black')
+// const batTwo = new Character(1732, 917, 15, 10, 'black')
+// const batThree = new Character(1720, 890, 15, 10, 'black')
 
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
@@ -91,6 +121,8 @@ const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
 const wallLever = new Environment(1300, 0, 35, 250, 'black')
+const wallLeverExt = new Environment(1300, 380, 35, 400, 'black')
+const wallLeverExtBot = new Environment(1300, 780, 750, 35, 'black')
 
 // = ! Danger ! = \\
 const lavaTop = new Environment(400, 0, 500, 399, "red")
@@ -329,6 +361,12 @@ function gameRuntime() {
     swordChest.render()
     leverOne.render()
     doorEnemy.render()
+    wallLeverExt.render()
+    wallLeverExtBot.render()
+    // batOne.render()
+    // batTwo.render()
+    // batThree.render()
+    // experiment.render()
     if (keyChest.alive) {
         keyChest.render()
     }
