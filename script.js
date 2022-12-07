@@ -25,8 +25,6 @@ class Character {
     }
 }
 
-
-
 // == !! HUGE BREAKTHROUGH WITH LEARNING EXTENSION AND DRAWING IN CANVAS !! == \\
 // class Winged extends Character {
 //     constructor(x, y, width, height, color, x2, y2, width2, height2, x3, y3, width3, height3) {
@@ -49,27 +47,62 @@ class Character {
 // }
 
 
+
+class Sprite {
+    constructor(x, y, sprite, width, height) {
+        this.x = x
+        this.y = y
+        this.sprite = sprite
+        this.alive = true
+        this.weapon = false
+        this.hasKey = false
+        this.width = width
+        this.height = height
+    }
+    // == ! RENDERING OF OBJECTS METHOD ! == \\
+    render() {
+        ctx.drawImage(this.sprite, this.x, this.y, this.sprite.width, this.sprite.height);
+    }
+}
 class Environment {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, color, img) {
         this.x = x
         this.y = y
         this.width = width
         this.height = height
         this.color = color
         this.alive = true
+        this.img = img
     }
     // == ! RENDERING OF OBJECTS METHOD ! == \\
     render() {
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
+    renderImg() {
+        ctx.drawImage(this.sprite, this.x, this.y, this.img.width, this.img.height)
+    }
 }
+// class Background {
+//     constructor() {
+//         this.cobblestone = new Image();
+//         this.cobblestone.src = './cobblestone.png'
+//         console.log(this.cobblestone.src)
+//         this.cobblestonePattern = ctx.createPattern(this.cobblestone, 'repeat')
+//     }
+//     render() {
+//         ctx.fillStyle = this.cobblestonePattern
+//         ctx.fillRect(0, 0, canvas.width, canvas.height)
+//     }
+// }
+
 
 // == ! Creating Winning and Losing Text ! == \\
 class Text {
-    constructor(x, y, text) {
+    constructor(x, y, text, color) {
         this.x = x
         this.y = y
+        this.color = color
         this.text = text
         this.display = false
     }
@@ -81,9 +114,10 @@ class Text {
 }
 
 class SmallText {
-    constructor(x, y, text) {
+    constructor(x, y, text, color) {
         this.x = x
         this.y = y
+        this.color = color
         this.text = text
         this.display = false
     }
@@ -101,8 +135,8 @@ class SmallText {
 const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
-const player = new Character(90, 55, 25, 45, 'lightgrey')
-const skeletonOne = new Character(1900, 300, 35, 75, 'white')
+
+// const skeletonOne = new Character(1900, 300, 35, 75, 'white')
 const zombieOne = new Character(1100, 300, 35, 50, 'green')
 // = ! Experimental creations ! = \\
 // const batOne = new Character(1700, 900, 15, 10, 'black')
@@ -113,6 +147,14 @@ const zombieOne = new Character(1100, 300, 35, 50, 'green')
 // == ! Creation of Walls/Environment ! == \\
 const floorMain = new Environment(0, 0, 395, 500, 'gray')
 
+const player = new Character(90, 55, 25, 25, 'lightgrey')
+// const boss = new Character(1100, 200, 50, 76, 'white')
+
+const grimSprite = new Image();
+grimSprite.src = './grim-sprite-current.png'
+const bossSprite = new Sprite(1500, 200, grimSprite, 76, 50)
+// == ! Creation of Walls/Environment ! == \\
+// const floorMain = new Environment(0, 0, 395, 500, 'gray') OBSOLETE
 // = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
@@ -120,18 +162,21 @@ const wallSide = new Environment(0, 0, 35, 1050, 'black')
 const wallConnector = new Environment(200, 600, 35, 500, 'black')
 const wallEnd = new Environment(0, 430, 235, 35, 'black')
 const wallEnd2 = new Environment(0, 890, 235, 35, 'black')
+
 const wallLever = new Environment(1300, 0, 35, 250, 'black')
 const wallLeverExt = new Environment(1300, 380, 35, 400, 'black')
 const wallLeverExtBot = new Environment(1300, 780, 750, 35, 'black')
 
 // = ! Danger ! = \\
-const lavaTop = new Environment(400, 0, 500, 399, "red")
-const lavaBot = new Environment(400, 456, 500, 550, "red")
+const lavaTop = new Environment(400, 0, 500, 400, "red")
+const lavaBot = new Environment(400, 455, 500, 550, "red")
 
 // = ! Misc. ! = \\
 const walkway = new Environment(400, 400, 500, 55, 'brown')
 
 // = ! Interactable Pairs(if applicable) ! = \\
+// const chest = new Image();
+// chest.src = './chest.png'
 const treasureChest = new Environment(90, 855, 50, 35, 'gold')
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
 
@@ -142,14 +187,14 @@ const leverOne = new Environment(1290, 245, 15, 7, 'lightgrey')
 const doorEnemy = new Environment(1300, 250, 35, 130, 'brown')
 
 // == ! Creation of Text Elements ! == \\
-const objective = new Text(450, 50, 'You gotta get out')
-const hint = new Text(350, 100, 'You need a weapon you fool')
-const deathTxt = new Text(515, 50, 'Get Smacked')
-const lavaTxt = new Text(515, 50, 'Mmm Cwispy')
-const wonTxt = new Text(515, 50, 'Hey you won')
-const swordTxt = new SmallText(1050, 825, 'You have a Sword')
-const keyTxt = new SmallText(1050, 875, 'You have a Key')
-const directTxt = new Text(330, 100, 'WASD to move, WASD + C to dash. R to restart')
+const objective = new Text(450, 50, 'You gotta get out', 'white')
+const hint = new Text(350, 100, 'You need a weapon you fool', 'white')
+const deathTxt = new Text(515, 50, 'Get Smacked', 'white')
+const lavaTxt = new Text(515, 50, 'Mmm Cwispy', 'white')
+const wonTxt = new Text(515, 50, 'Hey you won', 'white')
+const swordTxt = new SmallText(1050, 825, 'You have a Sword', 'white')
+const keyTxt = new SmallText(1050, 875, 'You have a Key', 'white')
+const directTxt = new Text(330, 100, 'WASD to move, WASD + C to dash. R to restart', 'white')
 // const deathText = new Text()
 
 
@@ -216,7 +261,9 @@ function characterMovement(speed) {
             player.weapon = false
             treasureChest.alive = true
             keyChest.alive = true
-            skeletonOne.alive = true
+            // skeletonOne.alive = true
+
+            bossSprite.alive = true
             hint.display = false
             objective.display = true
             deathTxt.display = false
@@ -231,9 +278,9 @@ function characterMovement(speed) {
             leverOne.alive = false
         }
 
+        console.log('r')
     }
 }
-
 document.addEventListener('keydown', e => pressedKeys[e.key] = true)
 document.addEventListener('keyup', e => pressedKeys[e.key] = false)
 
@@ -246,21 +293,22 @@ function detectHit(objectOne, objectTwo) {
     const right = objectOne.x <= objectTwo.x + objectTwo.width
     const top = objectOne.y + objectOne.height >= objectTwo.y
     const bottom = objectOne.y <= objectTwo.y + objectTwo.height
-    // console.log(left, right, top, bottom)
+    console.log(left, right, top, bottom)
     return left && right && top && bottom
 }
 objective.display = true
 directTxt.display = true
 // == ! GAMELOOP LOGIC ! == \\
 function gameRuntime() {
+
     // == ! clearing canvas ! == \\
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
 
     // == ! Defining Game Logic for Winning/Losing ! == \\
-    if (detectHit(player, skeletonOne)) {
+    if (detectHit(player, bossSprite)) {
         if (player.weapon) {
-            skeletonOne.alive = false
+            bossSprite.alive = false
             objective.display = false
             wonTxt.display = true
             // gameIsRunning = false
@@ -347,12 +395,12 @@ function gameRuntime() {
     }
 
     // == ! Rendering of Objects ! == \\
-    floorMain.render()
     wallStart.render()
     wallBack.render()
     wallSide.render()
     wallConnector.render()
     wallEnd.render()
+    wallEnd2.render()
     wallLever.render()
     lavaTop.render()
     lavaBot.render()
@@ -367,6 +415,9 @@ function gameRuntime() {
     // batTwo.render()
     // batThree.render()
     // experiment.render()
+
+
+
     if (keyChest.alive) {
         keyChest.render()
     }
@@ -379,10 +430,10 @@ function gameRuntime() {
     if (zombieOne.alive) {
         zombieOne.render()
     }
-    if (skeletonOne.alive) {
-        skeletonOne.render()
+    if (bossSprite.alive) {
+        bossSprite.render()
     }
-    if (skeletonOne.alive) {
+    if (bossSprite.alive) {
         wallEnd2.render()
     }
 
