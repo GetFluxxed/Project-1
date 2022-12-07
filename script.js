@@ -24,6 +24,20 @@ class Character {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
+class Sprite {
+    constructor(x, y, sprite) {
+        this.x = x
+        this.y = y
+        this.sprite = sprite
+        this.alive = true
+        this.weapon = false
+        this.hasKey = false
+    }
+    // == ! RENDERING OF OBJECTS METHOD ! == \\
+    render() {
+        ctx.drawImage(this.sprite, this.x, this.y, this.sprite.width, this.sprite.height);
+    }
+}
 class Environment {
     constructor(x, y, width, height, color) {
         this.x = x
@@ -40,6 +54,18 @@ class Environment {
     }
 }
 
+class Background {
+    constructor() {
+        this.cobblestone = new Image();
+        this.cobblestone.src = './cobblestone.png'
+
+        this.cobblestonePattern = ctx.createPattern(this.cobblestone, 'repeat')
+    }
+    render() {
+        ctx.fillStyle = this.cobblestonePattern
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
+}
 // == ! Creating Winning and Losing Text ! == \\
 class Text {
     constructor(x, y, text) {
@@ -77,10 +103,15 @@ const gameRuntimeInterval = setInterval(gameRuntime, 60)
 
 // == ! Creation of Player and Mobs ! == \\
 const player = new Character(90, 55, 25, 25, 'lightgrey')
-const boss = new Character(1000, 200, 50, 76, 'white')
+const boss = new Character(1100, 200, 50, 76, 'white')
+
+const grimSprite = new Image();
+grimSprite.src = './grim-sprite-current.png'
+const bossSprite = new Sprite(1000, 200, grimSprite)
 
 // == ! Creation of Walls/Environment ! == \\
-const floorMain = new Environment(0, 0, 395, 500, 'gray')
+// const floorMain = new Environment(0, 0, 395, 500, 'gray') OBSOLETE
+const background = new Background
 // = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
@@ -206,6 +237,7 @@ objective.display = true
 directTxt.display = true
 // == ! GAMELOOP LOGIC ! == \\
 function gameRuntime() {
+
     // == ! clearing canvas ! == \\
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -228,6 +260,7 @@ function gameRuntime() {
         }
 
     }
+
     // == ! Game Logic for Interacting with Environments ! == \\
     if (detectHit(player, wallStart)) {
         characterMovement(-20)
@@ -284,7 +317,7 @@ function gameRuntime() {
     }
 
     // == ! Rendering of Objects ! == \\
-    floorMain.render()
+    background.render()
     wallStart.render()
     wallBack.render()
     wallSide.render()
@@ -296,6 +329,7 @@ function gameRuntime() {
     walkway.render()
     doorStart.render()
     swordChest.render()
+    bossSprite.render()
     if (keyChest.alive) {
         keyChest.render()
     }
@@ -334,4 +368,7 @@ function gameRuntime() {
     if (directTxt.display) {
         directTxt.render()
     }
+
+
 }
+
