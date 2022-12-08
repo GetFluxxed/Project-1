@@ -61,9 +61,10 @@ class Sprite {
     }
     // == ! RENDERING OF OBJECTS METHOD ! == \\
     render() {
-        ctx.drawImage(this.sprite, this.x, this.y, this.sprite.width, this.sprite.height);
+        ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
     }
 }
+
 class Environment {
     constructor(x, y, width, height, color, img) {
         this.x = x
@@ -80,13 +81,15 @@ class Environment {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
     renderImg() {
-        ctx.drawImage(this.sprite, this.x, this.y, this.img.width, this.img.height)
+        console.log(this.img)
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 }
 // class Background {
 //     constructor() {
 //         this.cobblestone = new Image();
 //         this.cobblestone.src = './cobblestone.png'
+//         // this.cobblestone.width = 20
 //         console.log(this.cobblestone.src)
 //         this.cobblestonePattern = ctx.createPattern(this.cobblestone, 'repeat')
 //     }
@@ -152,9 +155,10 @@ const player = new Character(90, 55, 25, 25, 'lightgrey')
 
 const grimSprite = new Image();
 grimSprite.src = './grim-sprite-current.png'
-const bossSprite = new Sprite(1500, 200, grimSprite, 76, 50)
+const bossSprite = new Sprite(1500, 200, grimSprite, 73, 50)
 // == ! Creation of Walls/Environment ! == \\
 // const floorMain = new Environment(0, 0, 395, 500, 'gray') OBSOLETE
+// const background = new Background()
 // = ! Walls ! = \\
 const wallStart = new Environment(200, 0, 35, 300, 'black')
 const wallBack = new Environment(0, 0, 200, 35, 'black')
@@ -175,12 +179,12 @@ const lavaBot = new Environment(400, 455, 500, 550, "red")
 const walkway = new Environment(400, 400, 500, 55, 'brown')
 
 // = ! Interactable Pairs(if applicable) ! = \\
-// const chest = new Image();
-// chest.src = './chest.png'
-const treasureChest = new Environment(90, 855, 50, 35, 'gold')
+const chest = new Image();
+chest.src = './chest.png'
+const treasureChest = new Environment(90, 855, 50, 35, 'gold', chest)
 const doorStart = new Environment(200, 300, 35, 130, 'brown')
 
-const keyChest = new Environment(35, 395, 50, 35, 'gold')
+const keyChest = new Environment(35, 395, 50, 35, 'gold', chest)
 const swordChest = new Environment(200, 465, 35, 135, 'brown')
 
 const leverOne = new Environment(1290, 245, 15, 7, 'lightgrey')
@@ -293,7 +297,7 @@ function detectHit(objectOne, objectTwo) {
     const right = objectOne.x <= objectTwo.x + objectTwo.width
     const top = objectOne.y + objectOne.height >= objectTwo.y
     const bottom = objectOne.y <= objectTwo.y + objectTwo.height
-    console.log(left, right, top, bottom)
+    // console.log(left, right, top, bottom)
     return left && right && top && bottom
 }
 objective.display = true
@@ -395,6 +399,7 @@ function gameRuntime() {
     }
 
     // == ! Rendering of Objects ! == \\
+    // background.render()
     wallStart.render()
     wallBack.render()
     wallSide.render()
@@ -419,10 +424,11 @@ function gameRuntime() {
 
 
     if (keyChest.alive) {
-        keyChest.render()
+        console.log(keyChest)
+        keyChest.renderImg()
     }
     if (treasureChest.alive) {
-        treasureChest.render()
+        treasureChest.renderImg()
     }
     if (player.alive) {
         player.render()

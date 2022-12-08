@@ -7,7 +7,7 @@ body {
 
 #canvas {
     background-image: url('./cobblestone.png');
-    background-size: 100px, 75px;
+    background-size: 200px, 200px;
     height: 100%;
     width: 100%;
 }
